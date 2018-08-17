@@ -1,4 +1,5 @@
 #include "drawpane.h"
+#include <iostream>
 
 BEGIN_EVENT_TABLE(DrawPane, wxPanel)
 // some useful events
@@ -15,10 +16,12 @@ BEGIN_EVENT_TABLE(DrawPane, wxPanel)
  
 // catch paint events
 EVT_PAINT(DrawPane::paintEvent)
- 
+EVT_MOTION(DrawPane::mouseMoved)
+EVT_LEFT_DOWN(DrawPane::mouseDownLeft)
+EVT_LEFT_UP(DrawPane::mouseUpLeft)
 END_EVENT_TABLE()
- 
- 
+
+
 // some useful events
 /*
  void DrawPane::mouseMoved(wxMouseEvent& event) {}
@@ -31,9 +34,28 @@ END_EVENT_TABLE()
  void DrawPane::keyReleased(wxKeyEvent& event) {}
  */
  
-DrawPane::DrawPane(wxFrame* parent) :
-wxPanel(parent)
-{
+DrawPane::DrawPane(wxFrame* parent) : wxPanel(parent), panOk(false) {
+    this->draw_objects.push_back(1);
+    this->draw_objects.push_back(2);
+}
+
+void DrawPane::mouseDownLeft(wxMouseEvent& event) {
+    this->last_mouse_pos = (wxGetMousePosition() - this->GetScreenPosition());
+    this->panOk = true;
+}
+void DrawPane::mouseUpLeft(wxMouseEvent& event) {
+    this->panOk = false;
+}
+
+void DrawPane::mouseMoved(wxMouseEvent& event) {
+    if (!this->panOk && !event.Dragging()) {
+        return;
+    }
+
+    wxPoint mouse_pos = (wxGetMousePosition() - this->GetScreenPosition());
+    this->offset += this->last_mouse_pos - mouse_pos;
+    this->last_mouse_pos = mouse_pos;
+    this->Refresh();
 }
  
 /*
@@ -71,24 +93,11 @@ void DrawPane::paintNow()
  * method so that it can work no matter what type of DC
  * (e.g. wxPaintDC or wxClientDC) is used.
  */
-void DrawPane::render(wxDC&  dc)
-{
-    // draw some text
-    dc.DrawText(wxT("Testing"), 40, 60); 
- 
-    // draw a circle
-    dc.SetBrush(*wxGREEN_BRUSH); // green filling
-    dc.SetPen( wxPen( wxColor(255,0,0), 5 ) ); // 5-pixels-thick red outline
-    dc.DrawCircle( wxPoint(200,100), 25 /* radius */ );
- 
-    // draw a rectangle
-    dc.SetBrush(*wxBLUE_BRUSH); // blue filling
-    dc.SetPen( wxPen( wxColor(255,175,175), 10 ) ); // 10-pixels-thick pink outline
-    dc.DrawRectangle( 300, 100, 400, 200 );
- 
-    // draw a line
-    dc.SetPen( wxPen( wxColor(0,0,0), 3 ) ); // black line, 3 pixels thick
-    dc.DrawLine( 300, 100, 700, 300 ); // draw line across the rectangle
- 
-    // Look at the wxDC docs to learn how to draw other stuff
+void DrawPane::render(wxDC&  dc) {
+    for (auto current = this->draw_objects.begin(), end = this->draw_objects.end(); current != end; current++) {
+        // draw a rectangle
+        dc.SetBrush(*wxTRANSPARENT_BRUSH); // blue filling
+        dc.SetPen( wxPen( wxColor(0,0,0), 5)); // 10-pixels-thick pink outline
+        dc.DrawRectangle( 100*(*current) + this->offset.x, 100 + this->offset.y, 50, 50);
+    }
 }

@@ -1,3 +1,5 @@
+#include<vector>
+
 #include "wx/wx.h"
 #include "wx/sizer.h"
 
@@ -13,6 +15,9 @@ public:
  
     void render(wxDC& dc);
  
+    void mouseDownLeft(wxMouseEvent& event);
+    void mouseUpLeft(wxMouseEvent& event);
+    void mouseMoved(wxMouseEvent& event);
     // some useful events
     /*
      void mouseMoved(wxMouseEvent& event);
@@ -26,5 +31,11 @@ public:
      */
  
     DECLARE_EVENT_TABLE()
+
+private:
+    wxPoint offset;
+    wxPoint last_mouse_pos;
+    bool panOk;
+    std::vector<int> draw_objects;
 };
 #endif
