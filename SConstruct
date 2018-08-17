@@ -3,7 +3,7 @@
 libraries           = []
 library_paths       = ''
 cppDefines          = {}
-cppFlags            = ['-Wall']#, '-Werror']
+cppFlags            = ['-Wall']  # , '-Werror']
 cxxFlags            = ['-std=c++11']
 
 # define the attributes of the build environment
@@ -15,8 +15,8 @@ env.Append(CPPFLAGS         = cppFlags)
 env.Append(CXXFLAGS         = cxxFlags)
 env.Append(CPPPATH          = ['inc'])
 
-env.VariantDir('build/debug/src', 'src', duplicate=0)
+env.ParseConfig('wx-config --cflags --libs')
 
-env = Environment()
+env.VariantDir('build', 'src', duplicate=0)
 
-env.Program(target = 'helloworld', source=["src/main.cpp", "src/button.cpp"])
+env.Program(target='build/ArxmlVisualizer', source=["src/main.cpp", "src/button.cpp"])
