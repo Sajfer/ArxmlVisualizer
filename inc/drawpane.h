@@ -18,6 +18,7 @@ public:
     void mouseDownLeft(wxMouseEvent& event);
     void mouseUpLeft(wxMouseEvent& event);
     void mouseMoved(wxMouseEvent& event);
+    void keyPressed(wxKeyEvent& event);
     // some useful events
     /*
      void mouseMoved(wxMouseEvent& event);
