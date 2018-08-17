@@ -13,7 +13,10 @@ env.Append(LIBPATH          = library_paths)
 env.Append(CPPDEFINES       = cppDefines)
 env.Append(CPPFLAGS         = cppFlags)
 env.Append(CXXFLAGS         = cxxFlags)
+env.Append(CPPPATH          = ['inc'])
+
+env.VariantDir('build/debug/src', 'src', duplicate=0)
 
 env = Environment()
 
-env.Program(target = 'helloworld', source=["src/helloworld.cpp"])
+env.Program(target = 'helloworld', source=["src/main.cpp", "src/button.cpp"])
