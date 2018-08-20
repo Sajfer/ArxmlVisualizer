@@ -1,0 +1,72 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<AUTOSAR xmlns="http://autosar.org/schema/r4.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://autosar.org/schema/r4.0 AUTOSAR_4-3-0.xsd">
+  <AR-PACKAGES>
+    <AR-PACKAGE>
+      <SHORT-NAME>test</SHORT-NAME>
+      <ELEMENTS>
+        <COMPLEX-DEVICE-DRIVER-SW-COMPONENT-TYPE UUID="2297cfe8-f4c4-33b0-acde-20bd2c87477f">
+          <SHORT-NAME>TestComponent</SHORT-NAME>
+          <INTERNAL-BEHAVIORS>
+            <SWC-INTERNAL-BEHAVIOR UUID="0a578564-4c0f-388d-b6d8-126677280914">
+              <SHORT-NAME>TestComponentBehavior</SHORT-NAME>
+              <EVENTS>
+                <TIMING-EVENT UUID="2b49e236-e3af-4154-8e8b-78f2568a6809">
+                  <SHORT-NAME>TestComponentMainLoop</SHORT-NAME>
+                  <START-ON-EVENT-REF DEST="RUNNABLE-ENTITY">/test/TestComponent/TestComponentBehavior/TestComponent</START-ON-EVENT-REF>
+                  <PERIOD>0.01</PERIOD>
+                </TIMING-EVENT>
+              </EVENTS>
+              <HANDLE-TERMINATION-AND-RESTART>NO-SUPPORT</HANDLE-TERMINATION-AND-RESTART>
+              <RUNNABLES>
+                <RUNNABLE-ENTITY UUID="11211e01-6769-3d65-a9e0-2c3e6f46f1b2">
+                  <SHORT-NAME>TestComponent</SHORT-NAME>
+                  <MINIMUM-START-INTERVAL>0.0</MINIMUM-START-INTERVAL>
+                  <CAN-BE-INVOKED-CONCURRENTLY>false</CAN-BE-INVOKED-CONCURRENTLY>
+                  <SYMBOL>TestComponent</SYMBOL>
+                </RUNNABLE-ENTITY>
+              </RUNNABLES>
+              <SUPPORTS-MULTIPLE-INSTANTIATION>false</SUPPORTS-MULTIPLE-INSTANTIATION>
+            </SWC-INTERNAL-BEHAVIOR>
+          </INTERNAL-BEHAVIORS>
+        </COMPLEX-DEVICE-DRIVER-SW-COMPONENT-TYPE>
+        <SWC-IMPLEMENTATION UUID="3ee44fc4-13f8-38b2-b462-96ce7e9efe2d">
+          <SHORT-NAME>TestComponentImpl</SHORT-NAME>
+          <CODE-DESCRIPTORS>
+            <CODE UUID="c93fb31e-a456-31ce-b431-2158d7eb47ed">
+              <SHORT-NAME>src</SHORT-NAME>
+              <ARTIFACT-DESCRIPTORS>
+                <AUTOSAR-ENGINEERING-OBJECT>
+                  <SHORT-LABEL>artifactDescriptor</SHORT-LABEL>
+                  <CATEGORY>artifactDescriptorCategory</CATEGORY>
+                </AUTOSAR-ENGINEERING-OBJECT>
+              </ARTIFACT-DESCRIPTORS>
+            </CODE>
+          </CODE-DESCRIPTORS>
+          <PROGRAMMING-LANGUAGE>C</PROGRAMMING-LANGUAGE>
+          <RESOURCE-CONSUMPTION UUID="3f38bc97-7257-36d7-8233-6a4fdd21d40c">
+            <SHORT-NAME>resourceConsumption</SHORT-NAME>
+          </RESOURCE-CONSUMPTION>
+          <VENDOR-ID>0</VENDOR-ID>
+        </SWC-IMPLEMENTATION>
+        <COMPOSITION-SW-COMPONENT-TYPE UUID="f70741b7-180d-321e-9918-49240c591ee2">
+          <SHORT-NAME>TestComposition1</SHORT-NAME>
+          <COMPONENTS>
+            <SW-COMPONENT-PROTOTYPE UUID="70ad94cb-0e8f-390b-8725-b8776e15928e">
+              <SHORT-NAME>TestProt</SHORT-NAME>
+              <TYPE-TREF DEST="COMPLEX-DEVICE-DRIVER-SW-COMPONENT-TYPE">/test/TestComponent</TYPE-TREF>
+            </SW-COMPONENT-PROTOTYPE>
+          </COMPONENTS>
+        </COMPOSITION-SW-COMPONENT-TYPE>
+        <COMPOSITION-SW-COMPONENT-TYPE UUID="6ebee52a-1b84-3ba5-b5b2-5558e66bebb2">
+          <SHORT-NAME>TestComposition2</SHORT-NAME>
+          <COMPONENTS>
+            <SW-COMPONENT-PROTOTYPE UUID="3c290878-1896-380f-80a6-f2a9c6859880">
+              <SHORT-NAME>TestProt</SHORT-NAME>
+              <TYPE-TREF DEST="COMPLEX-DEVICE-DRIVER-SW-COMPONENT-TYPE">/test/TestComponent</TYPE-TREF>
+            </SW-COMPONENT-PROTOTYPE>
+          </COMPONENTS>
+        </COMPOSITION-SW-COMPONENT-TYPE>
+      </ELEMENTS>
+    </AR-PACKAGE>
+  </AR-PACKAGES>
+</AUTOSAR>

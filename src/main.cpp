@@ -1,6 +1,8 @@
 #include "main.h"
 #include "drawpane.h"
 
+#include "arxmlparser.h"
+
 IMPLEMENT_APP(ArxmlVizualizer)
 
 bool ArxmlVizualizer::OnInit()
@@ -14,6 +16,8 @@ bool ArxmlVizualizer::OnInit()
     frame->SetSizer(sizer);
     frame->SetAutoLayout(true);
     frame->Show();
+
+    Arxml arxml("Model.arxml");
 
     return true;
 }
