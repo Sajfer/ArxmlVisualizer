@@ -5,6 +5,7 @@
 #include<vector>
 
 #include "wx/wx.h"
+#include "arxmlparser.h"
 
 enum ArxmlType {
     composition,
@@ -13,11 +14,11 @@ enum ArxmlType {
 
 class DrawObject {
 public:
-    DrawObject(const char* name, ArxmlType type);
-    const std::string& getName();
-    const ArxmlType& getType();
-    const std::vector<DrawObject*>& getChildren();
-    void draw(wxDC&  dc, int x, int y);
+    DrawObject(const Arxml& arxml);
+    const std::string& getName() const;
+    const ArxmlType& getType() const;
+    const std::vector<DrawObject*>& getChildren() const;
+    void draw(wxDC&  dc, int x, int y) const;
 private:
     std::string name;
     ArxmlType type;

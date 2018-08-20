@@ -12,6 +12,8 @@ class DrawPane : public wxPanel {
 public:
     DrawPane(wxFrame* parent);
 
+    void setDrawObject(const DrawObject* draw_object);
+
     void paintEvent(wxPaintEvent & evt);
     void paintNow();
 
@@ -39,6 +41,6 @@ private:
     wxPoint offset;
     wxPoint last_mouse_pos;
     bool panOk;
-    std::vector<DrawObject*> draw_objects;
+    const DrawObject* draw_object;
 };
 #endif

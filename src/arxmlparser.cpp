@@ -65,6 +65,10 @@ void Arxml::findCompositions() {
     }
 }
 
+const Composition* Arxml::getComposition() const {
+    if (compositions.size() != 0)
+        return &compositions[0];
+}
 void Arxml::findConnectors(xml_node<> *composition) {
 
     Connector tmp_connector;
