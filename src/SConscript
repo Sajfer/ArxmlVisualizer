@@ -1,0 +1,12 @@
+Import('rootEnv')
+env = rootEnv.Clone()
+
+source = [
+    "main.cpp",
+    "drawpane.cpp",
+    "arxmlparser.cpp",
+    "drawobject.cpp"
+]
+env.VariantDir('build', 'src', duplicate=0)
+
+env.Program(target='ArxmlVisualizer', source=source)
