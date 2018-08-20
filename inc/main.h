@@ -2,6 +2,7 @@
 #include <wx/cmdline.h>
 
 #include "drawpane.h"
+#include "drawobject.h"
 
 class ArxmlVizualizer : public wxApp
 {
@@ -13,6 +14,8 @@ class ArxmlVizualizer : public wxApp
   private:
     wxFrame* frame;
     DrawPane* drawPane;
+    Arxml* model;
+    DrawObject* root_draw_object;
 
     std::string filePath;
 };

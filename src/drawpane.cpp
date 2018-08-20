@@ -35,9 +35,7 @@ END_EVENT_TABLE()
  void DrawPane::keyReleased(wxKeyEvent& event) {}
  */
  
-DrawPane::DrawPane(wxFrame* parent) : wxPanel(parent), panOk(false) {
-    DrawObject* d_o = new DrawObject("Name", ArxmlType::component);
-    this->draw_objects.push_back(d_o);
+DrawPane::DrawPane(wxFrame* parent) : wxPanel(parent), panOk(false), draw_object(nullptr) {
 }
 
 void DrawPane::mouseDownLeft(wxMouseEvent& event) {
@@ -103,10 +101,13 @@ void DrawPane::paintNow()
  * (e.g. wxPaintDC or wxClientDC) is used.
  */
 void DrawPane::render(wxDC&  dc) {
-    for (auto current = this->draw_objects.begin(), end = this->draw_objects.end(); current != end; current++) {
-        auto draw_object = *current;
-        int position_x = this->offset.x + 100;
-        int position_y = this->offset.y + 100;
+    int position_x = this->offset.x + 100;
+    int position_y = this->offset.y + 100;
+
+    if (draw_object)
         draw_object->draw(dc, position_x, position_y);
-    }
+}
+
+void DrawPane::setDrawObject(const DrawObject* d_o) {
+    draw_object = d_o;
 }

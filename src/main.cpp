@@ -1,6 +1,4 @@
 #include "main.h"
-#include "drawpane.h"
-
 #include "arxmlparser.h"
 
 IMPLEMENT_APP(ArxmlVizualizer)
@@ -9,7 +7,6 @@ static const wxCmdLineEntryDesc cmdLineDesc[] = {
     { wxCMD_LINE_PARAM,  NULL, NULL, "input file", wxCMD_LINE_VAL_STRING, wxCMD_LINE_PARAM_MULTIPLE },
     { wxCMD_LINE_NONE }
 };
-
 
 bool ArxmlVizualizer::OnInit() {
 
@@ -30,7 +27,11 @@ bool ArxmlVizualizer::OnInit() {
 
 int ArxmlVizualizer::OnRun() {
 
-    Arxml arxml(filePath);
+    model = new Arxml(filePath);
+
+    root_draw_object = new DrawObject(*model);
+
+    drawPane->setDrawObject(root_draw_object);
 
     if (!wxApp::OnRun())
         return 0;

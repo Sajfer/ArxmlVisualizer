@@ -57,3 +57,8 @@ void Arxml::findCompositions() {
         }
     }
 }
+
+const Composition* Arxml::getComposition() const {
+    if (compositions.size() != 0)
+        return &compositions[0];
+}

@@ -1,3 +1,5 @@
+#ifndef ARXML_PARSER
+#define ARXML_PARSER
 #include <iostream>
 #include <vector>
 
@@ -27,6 +29,9 @@ class Arxml {
         void findCompositions();
         std::vector<Component> findComponents(xml_node<> *composition);
     public:
+        const Composition* getComposition() const;
         Arxml(std::string path);
         ~Arxml();
 };
+
+#endif
