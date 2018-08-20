@@ -36,8 +36,8 @@ END_EVENT_TABLE()
  */
  
 DrawPane::DrawPane(wxFrame* parent) : wxPanel(parent), panOk(false) {
-    this->draw_objects.push_back(1);
-    this->draw_objects.push_back(2);
+    DrawObject* d_o = new DrawObject("Name", ArxmlType::component);
+    this->draw_objects.push_back(d_o);
 }
 
 void DrawPane::mouseDownLeft(wxMouseEvent& event) {
@@ -104,9 +104,11 @@ void DrawPane::paintNow()
  */
 void DrawPane::render(wxDC&  dc) {
     for (auto current = this->draw_objects.begin(), end = this->draw_objects.end(); current != end; current++) {
-        // draw a rectangle
-        dc.SetBrush(*wxTRANSPARENT_BRUSH); // blue filling
-        dc.SetPen( wxPen( wxColor(0,0,0), 5)); // 10-pixels-thick pink outline
-        dc.DrawRectangle( 100*(*current) + this->offset.x, 100 + this->offset.y, 50, 50);
+        int position_x = this->offset.x + 100;
+        int position_y = this->offset.y + 100;
+        dc.SetBrush(*wxTRANSPARENT_BRUSH);
+        dc.SetPen( wxPen( wxColor(0,0,0), 5));
+        dc.DrawRectangle( position_x, position_y, 50, 50);
+        dc.DrawText(wxT("current->getName().c_str()"), 40, 40);
     }
 }

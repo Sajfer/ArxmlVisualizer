@@ -1,20 +1,22 @@
+#ifndef DRAW_PANE
+#define DRAW_PANE
 #include<vector>
 
 #include "wx/wx.h"
 #include "wx/sizer.h"
 
-#ifndef DRAW_PANE
-#define DRAW_PANE
+#include "drawobject.h"
+
 class DrawPane : public wxPanel {
  
 public:
     DrawPane(wxFrame* parent);
- 
+
     void paintEvent(wxPaintEvent & evt);
     void paintNow();
- 
+
     void render(wxDC& dc);
- 
+
     void mouseDownLeft(wxMouseEvent& event);
     void mouseUpLeft(wxMouseEvent& event);
     void mouseMoved(wxMouseEvent& event);
@@ -37,6 +39,6 @@ private:
     wxPoint offset;
     wxPoint last_mouse_pos;
     bool panOk;
-    std::vector<int> draw_objects;
+    std::vector<DrawObject*> draw_objects;
 };
 #endif

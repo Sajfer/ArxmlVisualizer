@@ -19,4 +19,4 @@ env.ParseConfig('wx-config --cflags --libs')
 
 env.VariantDir('build', 'src', duplicate=0)
 
-env.Program(target='build/ArxmlVisualizer', source=["src/main.cpp", "src/drawpane.cpp", "src/arxmlparser.cpp"])
+env.Program(target='build/ArxmlVisualizer', source=["src/main.cpp", "src/drawpane.cpp", "src/arxmlparser.cpp", "src/drawobject.cpp"])
