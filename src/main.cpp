@@ -17,7 +17,7 @@ bool ArxmlVizualizer::OnInit()
     frame->SetAutoLayout(true);
     frame->Show();
 
-    Arxml arxml("Model.arxml");
+    Arxml arxml("modelFull.arxml");
 
     return true;
 }
