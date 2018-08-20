@@ -107,9 +107,6 @@ void DrawPane::render(wxDC&  dc) {
         auto draw_object = *current;
         int position_x = this->offset.x + 100;
         int position_y = this->offset.y + 100;
-        dc.SetBrush(*wxTRANSPARENT_BRUSH);
-        dc.SetPen( wxPen( wxColor(0,0,0), 5));
-        dc.DrawRectangle( position_x, position_y, 50, 50);
-        dc.DrawText(wxString(draw_object->getName()), position_x, position_y);
+        draw_object->draw(dc, position_x, position_y);
     }
 }

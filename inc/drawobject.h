@@ -4,6 +4,8 @@
 #include<string>
 #include<vector>
 
+#include "wx/wx.h"
+
 enum ArxmlType {
     composition,
     component
@@ -15,6 +17,7 @@ public:
     const std::string& getName();
     const ArxmlType& getType();
     const std::vector<DrawObject*>& getChildren();
+    void draw(wxDC&  dc, int x, int y);
 private:
     std::string name;
     ArxmlType type;
