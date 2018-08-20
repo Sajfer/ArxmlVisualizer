@@ -25,8 +25,6 @@ bool ArxmlVizualizer::OnInit() {
     frame->SetAutoLayout(true);
     frame->Show();
 
-    
-
     return true;
 }
 
