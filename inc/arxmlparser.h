@@ -18,8 +18,15 @@ struct Composition {
     std::vector<Component> components;
 };
 
+struct iref {
+    std::string component_ref;
+    std::string port_ref;
+};
+
 struct Connector {
     std::string name;
+    iref provider;
+    iref requester;
 };
 
 class Arxml {
