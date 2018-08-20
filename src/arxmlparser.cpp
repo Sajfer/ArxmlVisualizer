@@ -31,9 +31,11 @@ std::vector<Component> Arxml::findComponents(xml_node<> *composition) {
 
     Component tmp_component;
 
+    xml_node<> *component_node = composition->first_node("COMPONENTS")
+;
     std::vector<Component> components;
-    for (xml_node<> *child = composition->first_node("COMPONENTS"); child; child = child->next_sibling()) {
-        xml_node<> *component = child->first_node("SW-COMPONENT-PROTOTYPE")->first_node("SHORT-NAME");
+    for (xml_node<> *child = component_node->first_node("SW-COMPONENT-PROTOTYPE"); child; child = child->next_sibling()) {
+        xml_node<> *component = child->first_node("SHORT-NAME");
         tmp_component = {component->value()};
         components.push_back(tmp_component);
     }

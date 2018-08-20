@@ -4,7 +4,7 @@ rootEnv = Environment()
 libraries           = []
 library_paths       = ''
 cppDefines          = {}
-cppFlags            = ['-Wall', '-Werror']
+cppFlags            = ['-Wall'] #, '-Werror']
 cxxFlags            = ['-std=c++11']
 
 
