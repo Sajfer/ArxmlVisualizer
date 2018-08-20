@@ -89,7 +89,6 @@ void Arxml::findConnectors(xml_node<> *composition) {
     for (xml_node<> *child = component_node->first_node("ASSEMBLY-SW-CONNECTOR"); child; child = child->next_sibling()) {
         xml_node<> *component = child->first_node("SHORT-NAME");
         for (xml_node<> *child = component->next_sibling(); child; child = child->next_sibling()) {
-            std::cout << child->name() << std::endl;
             if(strcmp(child->name(), "PROVIDER-IREF") == 0) {
                 tmp_connector.provider.component_ref = child->first_node("CONTEXT-COMPONENT-REF")->value();
                 tmp_connector.provider.port_ref = child->first_node("TARGET-P-PORT-REF")->value();
