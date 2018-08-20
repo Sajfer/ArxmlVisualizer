@@ -19,7 +19,7 @@ Arxml::Arxml(std::string path) {
     for(auto const& comp: compositions) {
         std::cout << comp.name << std::endl;
         for(auto const& value: comp.components) {
-           std::cout << "   -" << value.name << std::endl;
+           std::cout << "   -" << value.name << "(" << value.type << ")" << std::endl;
         }
     }
     std::cout << "Connectors:" << std::endl;
@@ -40,8 +40,7 @@ std::vector<Component> Arxml::findComponents(xml_node<> *composition) {
 
     std::vector<Component> components;
     for (xml_node<> *child = component_node->first_node("SW-COMPONENT-PROTOTYPE"); child; child = child->next_sibling()) {
-        xml_node<> *component = child->first_node("SHORT-NAME");
-        tmp_component = {component->value()};
+        tmp_component = {child->first_node("SHORT-NAME")->value(), child->first_node("TYPE-TREF")->value()};
         components.push_back(tmp_component);
     }
     return components;
@@ -56,7 +55,7 @@ void Arxml::findCompositions() {
     for (xml_node<> *child = composition->first_node("AR-PACKAGE"); child; child = child->next_sibling()) {
         xml_node<> *package = child->first_node("ELEMENTS");
         for (xml_node<> *child = package->first_node("COMPOSITION-SW-COMPONENT-TYPE"); child; child = child->next_sibling()) {
-            tmp_composition = {child->first_node("SHORT-NAME")->value()};
+            tmp_composition = {child->first_node("SHORT-NAME")->value(),};
             tmp_composition.components = findComponents(child);
 
             findConnectors(child);

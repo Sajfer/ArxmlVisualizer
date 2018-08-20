@@ -7,6 +7,7 @@ using namespace rapidxml;
 
 struct Component {
     std::string name;
+    std::string type;
 };
 
 struct Composition {
