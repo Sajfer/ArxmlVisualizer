@@ -19,7 +19,7 @@ class Arxml {
         xml_document<> doc;
         std::vector<Composition> compositions;
         void findCompositions();
-        void findComponents(Composition composition);
+        std::vector<Component> findComponents(xml_node<> *composition);
     public:
         Arxml(std::string path);
         ~Arxml();

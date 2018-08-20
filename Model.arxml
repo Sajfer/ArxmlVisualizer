@@ -52,7 +52,7 @@
           <SHORT-NAME>TestComposition1</SHORT-NAME>
           <COMPONENTS>
             <SW-COMPONENT-PROTOTYPE UUID="70ad94cb-0e8f-390b-8725-b8776e15928e">
-              <SHORT-NAME>TestProt</SHORT-NAME>
+              <SHORT-NAME>TestProt1</SHORT-NAME>
               <TYPE-TREF DEST="COMPLEX-DEVICE-DRIVER-SW-COMPONENT-TYPE">/test/TestComponent</TYPE-TREF>
             </SW-COMPONENT-PROTOTYPE>
           </COMPONENTS>
@@ -61,7 +61,7 @@
           <SHORT-NAME>TestComposition2</SHORT-NAME>
           <COMPONENTS>
             <SW-COMPONENT-PROTOTYPE UUID="3c290878-1896-380f-80a6-f2a9c6859880">
-              <SHORT-NAME>TestProt</SHORT-NAME>
+              <SHORT-NAME>TestProt2</SHORT-NAME>
               <TYPE-TREF DEST="COMPLEX-DEVICE-DRIVER-SW-COMPONENT-TYPE">/test/TestComponent</TYPE-TREF>
             </SW-COMPONENT-PROTOTYPE>
           </COMPONENTS>
