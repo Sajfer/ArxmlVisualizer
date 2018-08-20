@@ -7,6 +7,8 @@ source = [
     "arxmlparser.cpp",
     "drawobject.cpp"
 ]
+env.Append(CXXFLAGS         = ['-g'])
+
 env.VariantDir('build', 'src', duplicate=0)
 
 env.Program(target='ArxmlVisualizer', source=source)
