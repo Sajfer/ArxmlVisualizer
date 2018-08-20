@@ -25,6 +25,7 @@ class Arxml {
         std::vector<Connector> connectors;
 
         void findCompositions();
+        void findConnectors(xml_node<> *composition);
         std::vector<Component> findComponents(xml_node<> *composition);
     public:
         Arxml(std::string path);
