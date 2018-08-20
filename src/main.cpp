@@ -29,7 +29,11 @@ bool ArxmlVizualizer::OnInit() {
 }
 
 int ArxmlVizualizer::OnRun() {
+
     Arxml arxml(filePath);
+
+    if (!wxApp::OnRun())
+        return 0;
 
     return 0;
 }
