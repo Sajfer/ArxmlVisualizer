@@ -19,6 +19,7 @@ EVT_PAINT(DrawPane::paintEvent)
 EVT_MOTION(DrawPane::mouseMoved)
 EVT_LEFT_DOWN(DrawPane::mouseDownLeft)
 EVT_LEFT_UP(DrawPane::mouseUpLeft)
+EVT_KEY_DOWN(DrawPane::keyPressed)
 END_EVENT_TABLE()
 
 
@@ -56,6 +57,14 @@ void DrawPane::mouseMoved(wxMouseEvent& event) {
     this->offset += this->last_mouse_pos - mouse_pos;
     this->last_mouse_pos = mouse_pos;
     this->Refresh();
+}
+
+void DrawPane::keyPressed(wxKeyEvent& event) {
+    if (!this->panOk && event.GetKeyCode() == 67) {
+        this->offset.x = 0;
+        this->offset.y = 0;
+        this->Refresh();
+    }
 }
  
 /*
