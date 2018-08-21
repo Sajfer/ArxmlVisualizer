@@ -6,6 +6,8 @@
 #define COMPONENT_PADDING_X 50
 #define COMPONENT_PADDING_Y 25
 
+#define COMPOSITION_COLOUR wxColor(190,255,225)
+#define COMPONENT_COLOUR wxColor(220,220,220)
 DrawObject::DrawObject(const Arxml& arxml) {
     const Composition* root_comp = arxml.getComposition();
     name = root_comp->name;
@@ -63,7 +65,10 @@ void DrawObject::draw(wxDC& dc, int x, int y) const {
     auto rect_size = calculateRectangleSize(*this, text_size.GetHeight());
 
     // Draw Rectangle
-    dc.SetBrush(*wxTRANSPARENT_BRUSH);
+    if (rect_size.nbr_row_col > 0)
+        dc.SetBrush(COMPOSITION_COLOUR);
+    else
+        dc.SetBrush(COMPONENT_COLOUR);
     dc.SetPen( wxPen(wxColor(0,0,0), 5));
     dc.DrawRectangle(x, y, rect_size.x, rect_size.y);
 
