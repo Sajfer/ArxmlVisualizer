@@ -16,10 +16,11 @@ Arxml::Arxml(std::string path) {
     doc.parse<0>(const_cast<char*>(contents.c_str()));
 
     findCompositions();
+    findInterfaces();
 
     std::cout << "Composition:" << std::endl;
     for(auto const& comp: compositions) {
-        std::cout << comp.name << std::endl;
+        std::cout << comp.name << " (package: " << comp.package << ")" << std::endl;
         for(auto const& value: comp.components) {
            std::cout << "   -" << value.name << "(" << value.type << ")" << std::endl;
         }
@@ -33,6 +34,10 @@ Arxml::Arxml(std::string path) {
         std::cout << "  Requester:" << std::endl;
         std::cout << "    -" << conn.requester.component_ref << std::endl;
         std::cout << "    -" << conn.requester.port_ref << std::endl;
+    }
+    std::cout << "Interfaces:" << std::endl;
+    for(auto const& iface: interfaces) {
+        std::cout << iface.name << " (package: " << iface.package  << ")" << std::endl;
     }
 }
 
@@ -57,18 +62,40 @@ std::vector<Component> Arxml::findComponents(xml_node<> *composition) {
 void Arxml::findCompositions() {
 
     Composition tmp_composition;
+    std::string package_name;
 
     xml_node<> *composition = doc.first_node("AUTOSAR")->first_node("AR-PACKAGES");
 
     for (xml_node<> *child = composition->first_node("AR-PACKAGE"); child; child = child->next_sibling()) {
+        package_name = child->first_node("SHORT-NAME")->value();
         xml_node<> *package = child->first_node("ELEMENTS");
         for (xml_node<> *child = package->first_node("COMPOSITION-SW-COMPONENT-TYPE"); child; child = child->next_sibling()) {
-            tmp_composition = {child->first_node("SHORT-NAME")->value(),};
+            tmp_composition = {child->first_node("SHORT-NAME")->value(), package_name};
             tmp_composition.components = findComponents(child);
 
             findConnectors(child);
 
             compositions.push_back(tmp_composition);
+        }
+    }
+}
+
+void Arxml::findInterfaces() {
+
+    std::string package_name;
+    Interface tmp_interface;
+
+
+    xml_node<> *composition = doc.first_node("AUTOSAR")->first_node("AR-PACKAGES");
+
+    for (xml_node<> *child = composition->first_node("AR-PACKAGE"); child; child = child->next_sibling()) {
+        package_name = child->first_node("SHORT-NAME")->value();
+        xml_node<> *package = child->first_node("ELEMENTS");
+
+        for (xml_node<> *child = package->first_node("SENDER-RECEIVER-INTERFACE"); child; child = child->next_sibling()) {
+            tmp_interface = {child->first_node("SHORT-NAME")->value(), package_name};
+
+            interfaces.push_back(tmp_interface);
         }
     }
 }
@@ -84,6 +111,7 @@ void Arxml::findConnectors(xml_node<> *composition) {
     Connector tmp_connector;
 
     xml_node<> *component_node = composition->first_node("CONNECTORS");
+
 
     std::vector<Component> components;
     for (xml_node<> *child = component_node->first_node("ASSEMBLY-SW-CONNECTOR"); child; child = child->next_sibling()) {

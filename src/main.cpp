@@ -49,8 +49,7 @@ bool ArxmlVizualizer::OnCmdLineParsed(wxCmdLineParser& parser) {
 
     // to get at your unnamed parameters use
     wxArrayString files;
-    for (uint i = 0; i < parser.GetParamCount(); i++)
-    {
+    for (uint i = 0; i < parser.GetParamCount(); i++) {
         files.Add(parser.GetParam(i));
     }
 
