@@ -6,6 +6,7 @@
 #include "wx/sizer.h"
 
 #include "drawobject.h"
+#include "gui_ids.h"
 
 class DrawPane : public wxPanel {
  

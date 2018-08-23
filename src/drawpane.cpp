@@ -35,7 +35,7 @@ END_EVENT_TABLE()
  void DrawPane::keyReleased(wxKeyEvent& event) {}
  */
  
-DrawPane::DrawPane(wxFrame* parent) : wxPanel(parent), panOk(false), draw_object(nullptr) {
+DrawPane::DrawPane(wxFrame* parent) : wxPanel(parent, DRAW_PANE_ID), panOk(false), draw_object(nullptr) {
 }
 
 void DrawPane::mouseDownLeft(wxMouseEvent& event) {

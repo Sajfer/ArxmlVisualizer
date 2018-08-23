@@ -1,5 +1,6 @@
 #include "main.h"
 #include "arxmlparser.h"
+#include "communication_panel.h"
 
 IMPLEMENT_APP(ArxmlVizualizer)
 
@@ -13,12 +14,16 @@ bool ArxmlVizualizer::OnInit() {
     if (!wxApp::OnInit())
         return false;
 
-    wxBoxSizer* sizer = new wxBoxSizer(wxHORIZONTAL);
     frame = new wxFrame((wxFrame*) NULL, -1, wxT("Arxml Vizualizer"), wxPoint(50,50), wxSize(800,600));
-    drawPane = new DrawPane((wxFrame*) frame);
-    sizer->Add(drawPane, 1, wxEXPAND);
+    
+    wxBoxSizer* sizer_frame = new wxBoxSizer(wxHORIZONTAL);
+    drawPane = new DrawPane(frame);
+    communication_panel = new CommunicationsPanel(frame);
 
-    frame->SetSizer(sizer);
+    sizer_frame->Add(drawPane, 4, wxEXPAND);
+    sizer_frame->Add(communication_panel, 1, wxEXPAND);
+
+    frame->SetSizer(sizer_frame);
     frame->SetAutoLayout(true);
     frame->Show();
 

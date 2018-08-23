@@ -5,7 +5,8 @@ source = [
     "main.cpp",
     "drawpane.cpp",
     "arxmlparser.cpp",
-    "drawobject.cpp"
+    "drawobject.cpp",
+    "communications_panel.cpp"
 ]
 env.Append(CXXFLAGS         = ['-g'])
 

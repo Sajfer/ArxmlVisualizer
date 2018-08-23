@@ -3,6 +3,7 @@
 
 #include "drawpane.h"
 #include "drawobject.h"
+#include "communication_panel.h"
 
 class ArxmlVizualizer : public wxApp
 {
@@ -16,6 +17,7 @@ class ArxmlVizualizer : public wxApp
     DrawPane* drawPane;
     Arxml* model;
     DrawObject* root_draw_object;
+    CommunicationsPanel* communication_panel;
 
     std::string filePath;
 };
