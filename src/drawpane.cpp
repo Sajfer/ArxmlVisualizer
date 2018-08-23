@@ -121,6 +121,6 @@ void DrawPane::render(wxDC&  dc) {
         draw_object->draw(dc, position_x, position_y);
 }
 
-void DrawPane::setDrawObject(const DrawObject* d_o) {
+void DrawPane::setDrawObject(DrawObject* d_o) {
     draw_object = d_o;
 }

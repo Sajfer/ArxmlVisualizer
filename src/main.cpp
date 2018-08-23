@@ -14,7 +14,7 @@ bool ArxmlVizualizer::OnInit() {
     if (!wxApp::OnInit())
         return false;
 
-    frame = new wxFrame((wxFrame*) NULL, -1, wxT("Arxml Vizualizer"), wxPoint(50,50), wxSize(800,600));
+    frame = new wxFrame((wxFrame*) NULL, -1, wxT("Arxml Vizualizer"), wxPoint(50,50), wxSize(1024,768));
     
     wxBoxSizer* sizer_frame = new wxBoxSizer(wxHORIZONTAL);
     drawPane = new DrawPane(frame);
