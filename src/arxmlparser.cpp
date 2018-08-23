@@ -7,32 +7,47 @@
 #include "arxmlparser.h"
 
 
-Arxml::Arxml(std::string path) {
+using namespace std;
+
+Arxml::Arxml(string path) {
     
-    std::ifstream in(path);
-    std::string contents((std::istreambuf_iterator<char>(in)), 
-    std::istreambuf_iterator<char>());
+    ifstream in(path);
+    string contents((istreambuf_iterator<char>(in)), 
+    istreambuf_iterator<char>());
 
     doc.parse<0>(const_cast<char*>(contents.c_str()));
 
     findCompositions();
+    findInterfaces();
+    findPorts();
 
-    std::cout << "Composition:" << std::endl;
+    cout << "Composition:" << endl;
     for(auto const& comp: compositions) {
-        std::cout << comp.name << std::endl;
+        cout << comp.name << " (package: " << comp.package << ")" << endl;
         for(auto const& value: comp.components) {
-           std::cout << "   -" << value.name << "(" << value.type << ")" << std::endl;
+           cout << "   -" << value.name << "(" << value.type << ")" << endl;
         }
     }
-    std::cout << "Connectors:" << std::endl;
+    cout << "Connectors:" << endl;
     for(auto const& conn: connectors) {
-        std::cout << conn.name << std::endl;
-        std::cout << "  Provider:" << std::endl;
-        std::cout << "    -" << conn.provider.component_ref << std::endl;
-        std::cout << "    -" << conn.provider.port_ref << std::endl;
-        std::cout << "  Requester:" << std::endl;
-        std::cout << "    -" << conn.requester.component_ref << std::endl;
-        std::cout << "    -" << conn.requester.port_ref << std::endl;
+        cout << conn.name << endl;
+        cout << "  Provider:" << endl;
+        cout << "    -" << conn.provider.component_ref << endl;
+        cout << "    -" << conn.provider.port_ref << endl;
+        cout << "  Requester:" << endl;
+        cout << "    -" << conn.requester.component_ref << endl;
+        cout << "    -" << conn.requester.port_ref << endl;
+    }
+    cout << "Interfaces:" << endl;
+    for(auto const& iface: interfaces) {
+        cout << iface.name << " (package: " << iface.package  << ")" << endl;
+    }
+    cout << "Connections:" << endl;
+    for(auto const& conn: connections) {
+        cout << conn.first << endl;
+        for(auto const& port: conn.second) {
+            cout << "   - " << port.name << endl;
+        }
     }
 }
 
@@ -40,15 +55,55 @@ Arxml::~Arxml() {
 
 }
 
-std::vector<Component> Arxml::findComponents(xml_node<> *composition) {
+void Arxml::findPorts() {
+
+    
+    string package_name;
+    xml_node<> *ports;
+
+    xml_node<> *composition = doc.first_node("AUTOSAR")->first_node("AR-PACKAGES");
+
+    for (xml_node<> *child = composition->first_node("AR-PACKAGE"); child; child = child->next_sibling()) {
+        package_name = child->first_node("SHORT-NAME")->value();
+        xml_node<> *package = child->first_node("ELEMENTS");
+        for (xml_node<> *applType = package->first_node("APPLICATION-SW-COMPONENT-TYPE"); applType; applType = applType->next_sibling()) {
+            auto typeName = package_name + "/" + applType->first_node("SHORT-NAME")->value();
+            vector<Port> vPorts;
+
+            ports = applType->first_node("PORTS");
+
+            for (xml_node<> *port = ports->first_node(); port; port = port->next_sibling()) {
+
+                if(strcmp(port->name(), "P-PORT-PROTOTYPE") == 0) {
+                    PPort tmp;
+                    tmp.name = port->first_node("SHORT-NAME")->value();
+                    tmp.provInterface = port->first_node("PROVIDED-INTERFACE-TREF")->value();
+                    vPorts.push_back(tmp);
+                }
+                if(strcmp(port->name(), "R-PORT-PROTOTYPE") == 0) {
+                    RPort tmp;
+                    tmp.name = port->first_node("SHORT-NAME")->value();
+                    tmp.reqInterface = port->first_node("REQUIRED-INTERFACE-TREF")->value();
+                    vPorts.push_back(tmp);
+                }
+            }
+            connections.insert( pair<string, vector<Port>>(typeName, vPorts) );
+        }
+    }
+
+}
+
+vector<Component> Arxml::findComponents(xml_node<> *composition) {
 
     Component tmp_component;
-
+    string composition_name = composition->first_node("SHORT-NAME")->value();
     xml_node<> *component_node = composition->first_node("COMPONENTS");
 
-    std::vector<Component> components;
+    vector<Component> components;
     for (xml_node<> *child = component_node->first_node("SW-COMPONENT-PROTOTYPE"); child; child = child->next_sibling()) {
-        tmp_component = {child->first_node("SHORT-NAME")->value(), child->first_node("TYPE-TREF")->value()};
+        auto component_name = child->first_node("SHORT-NAME")->value();
+        tmp_component = {component_name, child->first_node("TYPE-TREF")->value()};
+
         components.push_back(tmp_component);
     }
     return components;
@@ -57,18 +112,40 @@ std::vector<Component> Arxml::findComponents(xml_node<> *composition) {
 void Arxml::findCompositions() {
 
     Composition tmp_composition;
+    string package_name;
 
     xml_node<> *composition = doc.first_node("AUTOSAR")->first_node("AR-PACKAGES");
 
     for (xml_node<> *child = composition->first_node("AR-PACKAGE"); child; child = child->next_sibling()) {
+        package_name = child->first_node("SHORT-NAME")->value();
         xml_node<> *package = child->first_node("ELEMENTS");
         for (xml_node<> *child = package->first_node("COMPOSITION-SW-COMPONENT-TYPE"); child; child = child->next_sibling()) {
-            tmp_composition = {child->first_node("SHORT-NAME")->value(),};
+            tmp_composition = {child->first_node("SHORT-NAME")->value(), package_name};
             tmp_composition.components = findComponents(child);
 
             findConnectors(child);
 
             compositions.push_back(tmp_composition);
+        }
+    }
+}
+
+void Arxml::findInterfaces() {
+
+    string package_name;
+    Interface tmp_interface;
+
+
+    xml_node<> *composition = doc.first_node("AUTOSAR")->first_node("AR-PACKAGES");
+
+    for (xml_node<> *child = composition->first_node("AR-PACKAGE"); child; child = child->next_sibling()) {
+        package_name = child->first_node("SHORT-NAME")->value();
+        xml_node<> *package = child->first_node("ELEMENTS");
+
+        for (xml_node<> *child = package->first_node("SENDER-RECEIVER-INTERFACE"); child; child = child->next_sibling()) {
+            tmp_interface = {child->first_node("SHORT-NAME")->value(), package_name};
+
+            interfaces.push_back(tmp_interface);
         }
     }
 }
@@ -85,7 +162,8 @@ void Arxml::findConnectors(xml_node<> *composition) {
 
     xml_node<> *component_node = composition->first_node("CONNECTORS");
 
-    std::vector<Component> components;
+
+    vector<Component> components;
     for (xml_node<> *child = component_node->first_node("ASSEMBLY-SW-CONNECTOR"); child; child = child->next_sibling()) {
         xml_node<> *component = child->first_node("SHORT-NAME");
         for (xml_node<> *child = component->next_sibling(); child; child = child->next_sibling()) {

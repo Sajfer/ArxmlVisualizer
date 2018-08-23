@@ -3,18 +3,37 @@
 
 #include <iostream>
 #include <vector>
-
+#include <map>
 #include "rapidxml/rapidxml.hpp"
 
 using namespace rapidxml;
 
+struct Port {
+    std::string name;
+};
+
+struct RPort : Port {
+    std::string reqInterface;
+};
+
+struct PPort : Port {
+    std::string provInterface;
+};
+
+struct Interface {
+    std::string name;
+    std::string package;
+};
+
 struct Component {
     std::string name;
     std::string type;
+    std::vector<Port> ports;
 };
 
 struct Composition {
     std::string name;
+    std::string package;
     std::vector<Component> components;
 };
 
@@ -34,8 +53,13 @@ class Arxml {
         xml_document<> doc;
         std::vector<Composition> compositions;
         std::vector<Connector> connectors;
+        std::vector<Interface> interfaces;
+
+        std::map<std::string, std::vector<Port>> connections;
 
         void findCompositions();
+        void findInterfaces();
+        void findPorts();
         void findConnectors(xml_node<> *composition);
         std::vector<Component> findComponents(xml_node<> *composition);
     public:
@@ -44,4 +68,4 @@ class Arxml {
         ~Arxml();
 };
 
-#endif
+#endif // ARXML_PARSER
