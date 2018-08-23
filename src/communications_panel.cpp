@@ -3,9 +3,6 @@
 
 CommunicationsPanel::CommunicationsPanel(wxWindow* parent): wxPanel(parent, COMMUNICATION_PANEL_ID) {
     SetBackgroundColour(BACKGROUND_COLOR);
-    interfaces_on_selection.push_back(std::string("example1"));
-    interfaces_on_selection.push_back(std::string("example2"));
-    interfaces_on_selection.push_back(std::string("example3"));
 
     sizer = new wxBoxSizer(wxVERTICAL);
 
@@ -15,9 +12,17 @@ CommunicationsPanel::CommunicationsPanel(wxWindow* parent): wxPanel(parent, COMM
     title_text = new wxStaticText(this,
         COMMUNICATION_PANEL_TITLE_ID,
         title_str);
-    title_text->SetWindowStyle(wxALIGN_CENTRE_HORIZONTAL);
+    sizer->Add(title_text, -1, wxALIGN_CENTRE_HORIZONTAL);
 
-    sizer->Add(title_text, 1, wxALIGN_CENTRE_HORIZONTAL);
+    wxArrayString choices;
+
+    for (auto& choice : interfaces_on_selection) {
+        choices.Add(choice, 1);
+    }
+
+    list_box = new wxListBox(this, COMMUNICATION_PANEL_LIST_ID, wxDefaultPosition, wxDefaultSize, choices);
+
+    sizer->Add(list_box, 10, wxEXPAND);
     this->SetSizer(sizer);
     this->Layout();
 };
