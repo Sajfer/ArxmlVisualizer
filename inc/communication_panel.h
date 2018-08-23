@@ -11,9 +11,11 @@ class CommunicationsPanel: public wxPanel {
     public:
     CommunicationsPanel(wxWindow* parent);
     void setAvailableInterfaces(std::vector<std::string> interfaces_on_selection);
-    void setSizeAndPos();
+    void refreshContent();
     private:
     std::vector<std::string> interfaces_on_selection;
+    wxStaticText* title_text;
     wxListBox* list_box;
+    wxBoxSizer* sizer;
 };
 #endif
