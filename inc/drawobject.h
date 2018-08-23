@@ -17,6 +17,7 @@ public:
     DrawObject(const Arxml& arxml);
     DrawObject(Component component);
     const std::string& getName() const;
+    const std::string& getInfo() const;
     const ArxmlType& getType() const;
     const std::vector<DrawObject*>& getChildren() const;
     void draw(wxDC&  dc, int x, int y) const;
@@ -24,6 +25,7 @@ public:
 private:
     std::string name;
     ArxmlType type;
+    std::string info;
     std::vector<DrawObject*> children;
 };
 #endif
