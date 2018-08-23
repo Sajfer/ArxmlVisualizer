@@ -12,9 +12,17 @@ struct Port {
     std::string name;
 };
 
+struct RPort : Port {
+    std::string reqInterface;
+};
+
+struct PPort : Port {
+    std::string provInterface;
+};
+
 struct Interface {
     std::string name;
-    std::string package;  
+    std::string package;
 };
 
 struct Component {
@@ -47,10 +55,11 @@ class Arxml {
         std::vector<Connector> connectors;
         std::vector<Interface> interfaces;
 
-        std::map<std::string, std::string> connections;
+        std::map<std::string, std::vector<Port>> connections;
 
         void findCompositions();
         void findInterfaces();
+        void findPorts();
         void findConnectors(xml_node<> *composition);
         std::vector<Component> findComponents(xml_node<> *composition);
     public:
