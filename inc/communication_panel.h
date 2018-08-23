@@ -10,7 +10,7 @@
 class CommunicationsPanel: public wxPanel {
     public:
     CommunicationsPanel(wxWindow* parent);
-    void setAvailableInterfaces(std::vector<std::string> interfaces_on_selection);
+    void setAvailableConnections(std::vector<std::string> interfaces_on_selection);
     void refreshContent();
     private:
     std::vector<std::string> interfaces_on_selection;

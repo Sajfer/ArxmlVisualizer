@@ -16,10 +16,6 @@ CommunicationsPanel::CommunicationsPanel(wxWindow* parent): wxPanel(parent, COMM
 
     wxArrayString choices;
 
-    for (auto& choice : interfaces_on_selection) {
-        choices.Add(choice, 1);
-    }
-
     list_box = new wxListBox(this, COMMUNICATION_PANEL_LIST_ID, wxDefaultPosition, wxDefaultSize, choices);
 
     sizer->Add(list_box, 10, wxEXPAND);
@@ -27,10 +23,14 @@ CommunicationsPanel::CommunicationsPanel(wxWindow* parent): wxPanel(parent, COMM
     this->Layout();
 };
 
-void CommunicationsPanel::setAvailableInterfaces(std::vector<std::string> interfaces_on_selection) {
+void CommunicationsPanel::setAvailableConnections(std::vector<std::string> interfaces_on_selection) {
     this->interfaces_on_selection = interfaces_on_selection;
+    refreshContent();
 }
 
 void CommunicationsPanel::refreshContent() {
-
+    list_box->Clear();
+    for (auto& choice : interfaces_on_selection) {
+        list_box->Append(choice);
+    }
 }

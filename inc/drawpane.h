@@ -7,6 +7,7 @@
 
 #include "drawobject.h"
 #include "gui_ids.h"
+#include "communication_panel.h"
 
 class DrawPane : public wxPanel {
  

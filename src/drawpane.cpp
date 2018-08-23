@@ -38,9 +38,22 @@ END_EVENT_TABLE()
 DrawPane::DrawPane(wxFrame* parent) : wxPanel(parent, DRAW_PANE_ID), panOk(false), draw_object(nullptr) {
 }
 
+void setCommunicationPanelOptions() {
+    CommunicationsPanel* communication_panel = dynamic_cast<CommunicationsPanel*>(wxWindowBase::FindWindowById(COMMUNICATION_PANEL_ID));
+
+    std::vector<std::string> options;
+    options.push_back(std::string("apa"));
+    options.push_back(std::string("bepa"));
+    options.push_back(std::string("cepa"));
+    options.push_back(std::string("depa"));
+    if (communication_panel)
+        communication_panel->setAvailableConnections(options);
+}
+
 void DrawPane::mouseDownLeft(wxMouseEvent& event) {
     this->last_mouse_pos = (wxGetMousePosition() - this->GetScreenPosition());
     this->panOk = true;
+    setCommunicationPanelOptions();
 }
 void DrawPane::mouseUpLeft(wxMouseEvent& event) {
     this->panOk = false;
