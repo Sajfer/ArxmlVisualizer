@@ -1,5 +1,7 @@
 # ArxmlVisualizer
 
+[![CircleCI](https://circleci.com/gh/Sajfer/ArxmlVisualizer/tree/master.svg?style=svg)](https://circleci.com/gh/Sajfer/ArxmlVisualizer/tree/master)
+
 http://codelite.org/LiteEditor/WxWidgets31Binaries#toc2
 
 
