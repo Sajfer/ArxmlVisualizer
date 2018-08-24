@@ -1,0 +1,20 @@
+version: 2.0
+jobs:
+  build:
+    docker:
+      - image: gcc:6
+    steps:
+      - checkout
+      - run: apt update
+      - run: apt-get install software-properties-common -y
+      - run: apt-key adv --fetch-keys http://repos.codelite.org/CodeLite.asc
+      - run: apt-add-repository 'deb http://repos.codelite.org/wx3.1.1/debian/ jessie libs'
+      - run: apt update
+      - run: apt-get install libwxbase3.1-0-unofficial -y
+      - run: apt-get install libwxbase3.1-dev -y
+      - run: apt-get install libwxgtk3.1-0-unofficial -y
+      - run: apt-get install libwxgtk3.1-dev -y
+      - run: apt-get install wx3.1-headers -y
+      - run: apt-get install wx-common -y
+      - run: apt install scons -y
+      - run: scons
