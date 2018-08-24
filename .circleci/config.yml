@@ -18,3 +18,7 @@ jobs:
       - run: apt-get install wx-common -y
       - run: apt install scons -y
       - run: scons
+
+      - store_artifacts:
+          path: build/ArxmlVisualizer
+          destination: ArxmlVisualizer
