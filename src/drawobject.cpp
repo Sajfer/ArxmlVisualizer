@@ -118,3 +118,21 @@ void DrawObject::draw(wxDC& dc, int x, int y) {
         child->draw(dc, x_pos, y_pos);
     }
 }
+
+DrawObject* DrawObject::getComponentUnderCursor(wxPoint& cursor_position) {
+    DrawObject* matching_component = nullptr;
+
+    if (cursor_position.x < start_x || cursor_position.x > end_x)
+        return matching_component;
+    if (cursor_position.y < start_y || cursor_position.y > end_y)
+        return matching_component;
+
+    matching_component = this;
+
+    for (auto& child : children) {
+        DrawObject* matching_child = child->getComponentUnderCursor(cursor_position);
+        if (matching_child)
+            matching_component = matching_child;
+    }
+    return matching_component;
+}

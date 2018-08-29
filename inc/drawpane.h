@@ -44,5 +44,6 @@ private:
     wxPoint last_mouse_pos;
     bool panOk;
     DrawObject* draw_object;
+    const DrawObject* getComponentUnderCursor(wxPoint& curser_position);
 };
 #endif

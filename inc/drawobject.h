@@ -14,6 +14,7 @@ public:
     const std::string& getName() const;
     const std::string& getInfo() const;
     const std::vector<DrawObject*>& getChildren() const;
+    DrawObject* getComponentUnderCursor(wxPoint& cursor_pos);
     void draw(wxDC&  dc, int x, int y);
     void addChild(DrawObject* child);
 private:
