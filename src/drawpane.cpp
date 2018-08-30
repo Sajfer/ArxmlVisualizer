@@ -41,13 +41,12 @@ DrawPane::DrawPane(wxFrame* parent) : wxPanel(parent, DRAW_PANE_ID), panOk(false
 void setCommunicationPanelOptions(const DrawObject* component) {
     CommunicationsPanel* communication_panel = dynamic_cast<CommunicationsPanel*>(wxWindowBase::FindWindowById(COMMUNICATION_PANEL_ID));
 
-    
-
     std::vector<std::string> options;
-    options.push_back(std::string("apa"));
-    options.push_back(std::string("bepa"));
-    options.push_back(std::string("cepa"));
-    options.push_back(std::string("depa"));
+
+    std::cout << component->getName() << "\t" << component->getPorts().size() << std::endl;
+    for (auto& port : component->getPorts()) {
+        options.push_back(port);
+    }
     if (communication_panel)
         communication_panel->setAvailableConnections(options);
 }

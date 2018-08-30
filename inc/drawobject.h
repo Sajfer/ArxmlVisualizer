@@ -10,9 +10,10 @@
 class DrawObject {
 public:
     DrawObject(const Arxml& arxml);
-    DrawObject(Component component);
+    DrawObject(const Component& component);
     const std::string& getName() const;
     const std::string& getInfo() const;
+    const std::vector<std::string>& getPorts() const;
     const std::vector<DrawObject*>& getChildren() const;
     DrawObject* getComponentUnderCursor(wxPoint& cursor_pos);
     void draw(wxDC&  dc, int x, int y);
@@ -21,6 +22,7 @@ private:
     std::string name;
     std::string type;
     std::vector<DrawObject*> children;
+    std::vector<std::string> ports;
 
     int start_x;
     int start_y;

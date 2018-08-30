@@ -5,9 +5,55 @@
 #include <cstring>
 
 #include "arxmlparser.h"
+#include "autosar_type_defines.h"
 
 
 using namespace std;
+
+void find_nodes_of_type(vector<xml_node<>*>& result_vector, xml_node<>& parent, string& type) {
+    xml_node<>* current = parent.first_node();
+
+    while (current) {
+        if (strcmp(current->name(), type.c_str()) != 0) {
+            find_nodes_of_type(result_vector, *current, type);
+        } else {
+            result_vector.push_back(current);
+        }
+        current = current->next_sibling();
+    }
+}
+
+vector<xml_node<>*> find_nodes_of_type(rapidxml::xml_document<>& doc, string& type) {
+    vector<xml_node<>*> result;
+
+    xml_node<>* top = doc.first_node();
+    find_nodes_of_type(result, *top, type);
+
+    return result;
+}
+
+std::string get_autosar_path_of_node(xml_node<>& node) {
+    auto name_node = node.first_node(SHORT_NAME);
+    auto parent_node = node.parent();
+    
+    if (!name_node)
+        return "";
+    
+    std::string path(name_node->value());
+
+    while(parent_node) {
+        name_node = parent_node->first_node(SHORT_NAME);
+
+        if (name_node) {
+            path.insert(0, "/");
+            path.insert(0, name_node->value());
+        }
+
+        parent_node = parent_node->parent();
+    }
+
+    return path;
+}
 
 Arxml::Arxml(string path) {
     
@@ -17,6 +63,7 @@ Arxml::Arxml(string path) {
 
     doc.parse<0>(const_cast<char*>(contents.c_str()));
 
+    component_type_map = getComponentTypes();
     findCompositions();
     findInterfaces();
     findPorts();
@@ -25,7 +72,7 @@ Arxml::Arxml(string path) {
     for(auto const& comp: compositions) {
         cout << comp.name << " (package: " << comp.package << ")" << endl;
         for(auto const& value: comp.components) {
-           cout << "   -" << value.name << "(" << value.type << ")" << endl;
+           cout << "   -" << value.name << "(" << value.type.name << ")" << endl;
         }
     }
     cout << "Connectors:" << endl;
@@ -49,6 +96,25 @@ Arxml::Arxml(string path) {
             cout << "   - " << port.name << endl;
         }
     }
+
+    cout << "Types:" << endl;
+    for(auto& type: component_type_map) {
+        cout << type.first << endl;
+    }
+}
+
+std::map<std::string, ComponentType> Arxml::getComponentTypes() {
+    string type(APPLICATION_SW_COMPONENT_TYPE);
+    auto xml_nodes = find_nodes_of_type(doc, type);
+
+    map<string, ComponentType> result;
+    for (auto& node : xml_nodes) {
+        ComponentType comp;
+        comp.name = node->first_node(SHORT_NAME)->value();
+        result.insert(pair<string, ComponentType> (get_autosar_path_of_node(*node), comp));
+    }
+
+    return result;
 }
 
 Arxml::~Arxml() {
@@ -56,8 +122,6 @@ Arxml::~Arxml() {
 }
 
 void Arxml::findPorts() {
-
-    
     string package_name;
     xml_node<> *ports;
 
@@ -90,19 +154,23 @@ void Arxml::findPorts() {
             connections.insert( pair<string, vector<Port>>(typeName, vPorts) );
         }
     }
-
 }
 
 vector<Component> Arxml::findComponents(xml_node<> *composition) {
 
     Component tmp_component;
+    ComponentType tmp_type;
     string composition_name = composition->first_node("SHORT-NAME")->value();
     xml_node<> *component_node = composition->first_node("COMPONENTS");
 
     vector<Component> components;
     for (xml_node<> *child = component_node->first_node("SW-COMPONENT-PROTOTYPE"); child; child = child->next_sibling()) {
         auto component_name = child->first_node("SHORT-NAME")->value();
-        tmp_component = {component_name, child->first_node("TYPE-TREF")->value()};
+        tmp_component.name = component_name;
+        
+        auto type = child->first_node("TYPE-TREF")->value();
+        tmp_type.name = type;
+        tmp_component.type = tmp_type;
 
         components.push_back(tmp_component);
     }

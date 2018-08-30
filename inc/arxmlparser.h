@@ -25,10 +25,14 @@ struct Interface {
     std::string package;
 };
 
+struct ComponentType {
+    std::string name;
+    std::vector<std::string> ports;
+};
+
 struct Component {
     std::string name;
-    std::string type;
-    std::vector<Port> ports;
+    ComponentType type;
 };
 
 struct Composition {
@@ -54,9 +58,11 @@ class Arxml {
         std::vector<Composition> compositions;
         std::vector<Connector> connectors;
         std::vector<Interface> interfaces;
+        std::map<std::string, ComponentType> component_type_map;
 
         std::map<std::string, std::vector<Port>> connections;
 
+        std::map<std::string, ComponentType> getComponentTypes();
         void findCompositions();
         void findInterfaces();
         void findPorts();
