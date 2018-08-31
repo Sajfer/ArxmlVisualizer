@@ -57,6 +57,15 @@ std::string get_autosar_path_of_node(xml_node<>& node) {
     return path;
 }
 
+std::string get_first_value(xml_node<>& node, const string& type) {
+    auto result = node.first_node(type.c_str());
+
+    if (result)
+        return result->value();
+    else
+        return std::string("");
+}
+
 Arxml::Arxml(string path) {
     
     ifstream in(path);
@@ -119,8 +128,8 @@ std::map<std::string, ComponentType> Arxml::getComponentTypes() {
 
         for (auto& port : p_ports) {
             PPort tmp_port;
-            tmp_port.name = port->first_node(SHORT_NAME)->value();
-            tmp_port.provInterface = port->first_node(PROVIDED_INTERFACE)->value();
+            tmp_port.name = get_first_value(*port, SHORT_NAME);
+            tmp_port.provInterface = get_first_value(*port, PROVIDED_INTERFACE);
             comp.ports.push_back(tmp_port);
         }
 
@@ -129,8 +138,8 @@ std::map<std::string, ComponentType> Arxml::getComponentTypes() {
 
         for (auto& port : r_ports) {
             RPort tmp_port;
-            tmp_port.name = port->first_node(SHORT_NAME)->value();
-            tmp_port.reqInterface = port->first_node(REQUIRED_INTERFACE)->value();
+            tmp_port.name = get_first_value(*port, SHORT_NAME);
+            tmp_port.reqInterface = get_first_value(*port, REQUIRED_INTERFACE);
             comp.ports.push_back(tmp_port);
         }
 
