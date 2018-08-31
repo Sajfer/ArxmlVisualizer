@@ -19,11 +19,7 @@ DrawObject::DrawObject(const Arxml& arxml) {
 
 DrawObject::DrawObject(const Component& component) {
     name = component.name;
-    type = component.type.name;
-
-    for (auto& port : component.type.ports) {
-        ports.push_back(port);
-    }
+    type = component.type;
 }
 
 void DrawObject::addChild(DrawObject* child) {
@@ -35,7 +31,7 @@ const std::string& DrawObject::getName() const {
 }
 
 const std::string& DrawObject::getInfo() const {
-    return type;
+    return type.name;
 }
 
 const std::vector<DrawObject*>& DrawObject::getChildren() const {
@@ -140,6 +136,6 @@ DrawObject* DrawObject::getComponentUnderCursor(wxPoint& cursor_position) {
     return matching_component;
 }
 
-const std::vector<std::string>& DrawObject::getPorts() const {
-    return ports;
+const std::vector<Port>& DrawObject::getPorts() const {
+    return type.ports;
 }

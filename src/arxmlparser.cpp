@@ -10,7 +10,7 @@
 
 using namespace std;
 
-void find_nodes_of_type(vector<xml_node<>*>& result_vector, xml_node<>& parent, string& type) {
+void find_nodes_of_type(vector<xml_node<>*>& result_vector, xml_node<>& parent, const string& type) {
     xml_node<>* current = parent.first_node();
 
     while (current) {
@@ -51,6 +51,8 @@ std::string get_autosar_path_of_node(xml_node<>& node) {
 
         parent_node = parent_node->parent();
     }
+
+    path.insert(0, "/");
 
     return path;
 }
@@ -111,6 +113,27 @@ std::map<std::string, ComponentType> Arxml::getComponentTypes() {
     for (auto& node : xml_nodes) {
         ComponentType comp;
         comp.name = node->first_node(SHORT_NAME)->value();
+
+        vector<xml_node<>*> p_ports;
+        find_nodes_of_type(p_ports, *node, P_PORT);
+
+        for (auto& port : p_ports) {
+            PPort tmp_port;
+            tmp_port.name = port->first_node(SHORT_NAME)->value();
+            tmp_port.provInterface = port->first_node(PROVIDED_INTERFACE)->value();
+            comp.ports.push_back(tmp_port);
+        }
+
+        vector<xml_node<>*> r_ports;
+        find_nodes_of_type(r_ports, *node, R_PORT);
+
+        for (auto& port : r_ports) {
+            RPort tmp_port;
+            tmp_port.name = port->first_node(SHORT_NAME)->value();
+            tmp_port.reqInterface = port->first_node(REQUIRED_INTERFACE)->value();
+            comp.ports.push_back(tmp_port);
+        }
+
         result.insert(pair<string, ComponentType> (get_autosar_path_of_node(*node), comp));
     }
 
@@ -169,7 +192,7 @@ vector<Component> Arxml::findComponents(xml_node<> *composition) {
         tmp_component.name = component_name;
         
         auto type = child->first_node("TYPE-TREF")->value();
-        tmp_type.name = type;
+        tmp_type = component_type_map[type];
         tmp_component.type = tmp_type;
 
         components.push_back(tmp_component);

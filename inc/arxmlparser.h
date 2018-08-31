@@ -27,7 +27,7 @@ struct Interface {
 
 struct ComponentType {
     std::string name;
-    std::vector<std::string> ports;
+    std::vector<Port> ports;
 };
 
 struct Component {

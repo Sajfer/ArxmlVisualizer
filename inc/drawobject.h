@@ -13,16 +13,15 @@ public:
     DrawObject(const Component& component);
     const std::string& getName() const;
     const std::string& getInfo() const;
-    const std::vector<std::string>& getPorts() const;
+    const std::vector<Port>& getPorts() const;
     const std::vector<DrawObject*>& getChildren() const;
     DrawObject* getComponentUnderCursor(wxPoint& cursor_pos);
     void draw(wxDC&  dc, int x, int y);
     void addChild(DrawObject* child);
 private:
     std::string name;
-    std::string type;
+    ComponentType type;
     std::vector<DrawObject*> children;
-    std::vector<std::string> ports;
 
     int start_x;
     int start_y;

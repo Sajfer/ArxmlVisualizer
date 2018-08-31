@@ -45,7 +45,7 @@ void setCommunicationPanelOptions(const DrawObject* component) {
 
     std::cout << component->getName() << "\t" << component->getPorts().size() << std::endl;
     for (auto& port : component->getPorts()) {
-        options.push_back(port);
+        options.push_back(port.name);
     }
     if (communication_panel)
         communication_panel->setAvailableConnections(options);
