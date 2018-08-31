@@ -12,6 +12,8 @@ class CommunicationsPanel: public wxPanel {
     CommunicationsPanel(wxWindow* parent);
     void setAvailableConnections(std::vector<std::string> interfaces_on_selection);
     void refreshContent();
+    void PortSelected(wxMouseEvent& event);
+
     private:
     std::vector<std::string> interfaces_on_selection;
     wxStaticText* title_text;
